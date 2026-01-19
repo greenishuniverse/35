@@ -25,15 +25,18 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Build
+      run: |
+        mvn -q -DskipTests package
     - name: Run jar
       env:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         TENANT_GUID: ${{ secrets.TENANT_GUID }}
         USERNAME: ${{ secrets.USERNAME }}
-        PASSWORD: ${{ secrets.PASSWORD }}
       run: |
-        java -jar ./officeE5-1.0-SNAPSHOT-jar-with-dependencies.jar "$CLIENT_ID" "$USERNAME" "$PASSWORD" "$TENANT_GUID" "$CLIENT_SECRET"  >> ./run.log
+        # 推荐：应用模式（client_credentials），避免MFA/密码变更导致的失败
+        java -jar ./target/officeE5-1.0-SNAPSHOT-jar-with-dependencies.jar "$CLIENT_ID" "$TENANT_GUID" "$CLIENT_SECRET" "$USERNAME"  >> ./run.log
         tail run.log   
     - name: Commit log
       env:

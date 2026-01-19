@@ -42,8 +42,11 @@
 | CLIENT_SECRET | 证书和密码中的"客户端密码"                           |  3   |
 | TENANT_GUID   | 目录(租户) ID                                        |  2   |
 | USERNAME      | 登录Microsoft Azure的账号(xxxx@xxxx.onmicrosoft.com) |      |
-| PASSWORD      | 登录Microsoft Azure的密码                            |      |
 | TOKEN         | GitHub Token                                         |      |
+
+> 说明：如果账号启用了 Microsoft Authenticator / MFA / 安全默认值 / 条件访问，使用“用户名+密码”方式（ROPC）很容易被直接拦截并报 `AADSTS50126` 或 `invalid_grant`。
+> 
+> 当前工作流已改为**应用模式（client_credentials）**：不再需要 `PASSWORD`，只需要 `CLIENT_ID / TENANT_GUID / CLIENT_SECRET`，以及一个用于调用 Graph 的 `USERNAME`（可理解为目标用户的 UPN）。
 
 > **其中的 `TOKEN` 获取在GitHub `Setting` -> `Developer settings`  -> `Personal access tokens` 中获取，用于更新日志**<br>
 > **或者[点击这里](https://github.com/settings/tokens/new)新建一个 Personal access token，命名随意**
